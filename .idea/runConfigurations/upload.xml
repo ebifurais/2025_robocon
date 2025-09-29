@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="upload" type="platformio" factoryName="PlatformIO Debug" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="2025_robocon" TARGET_NAME="PlatformIO" CONFIG_NAME="PlatformIO">
+    <method v="2">
+      <option name="PlatformioUploadBeforeRun" enabled="true" />
+    </method>
+  </configuration>
+</component>
