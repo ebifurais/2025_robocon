@@ -106,7 +106,7 @@ const int PWM5_PIN = 4;
 const int DIR5_PIN = 5;
 
 // === PWM設定 ===
-const int PWM_FREQ = 5000; // 5kHz
+const int PWM_FREQ = 20000; // 20kHz (Cytron推奨)
 const int PWM_RES = 10; // 10bit分解能 (0-1023)
 
 // チャンネル割当
@@ -116,7 +116,7 @@ const int PWM3_CH = 2;
 const int PWM4_CH = 3;
 const int PWM5_CH = 4;
 // === 出力設定 ===
-const int MOTOR_POWER = 100; // 出力強さ (0～1023)
+const int MOTOR_POWER = 200; // 出力強さ (0～1023)
 
 // --- モータ制御関数 ---
 void setMotor(int pwm_ch, int dir_pin, int speed) {
@@ -228,9 +228,13 @@ void loop() {
     // ボタンが押された瞬間
     circlePressed = !circlePressed; // 状態をトグル
     if (circlePressed) {
-      setMotor(PWM3_CH, DIR3_PIN, 1023);
+      digitalWrite(PWM3_PIN, HIGH);
+      digitalWrite(DIR3_PIN, HIGH);
+      //setMotor(PWM3_CH, DIR3_PIN, 1023);
     } else {
-      setMotor(PWM3_CH, DIR3_PIN, 0);
+      digitalWrite(PWM3_PIN, LOW);
+      digitalWrite(DIR3_PIN, LOW);
+      //setMotor(PWM3_CH, DIR3_PIN, 0);
     }
   }
   prev_circle = button_circle; // 状態を更新
@@ -240,9 +244,13 @@ void loop() {
     // ボタンが押された瞬間
     squarePressed = !squarePressed; // 状態をトグル
     if (squarePressed) {
-      setMotor(PWM4_CH, DIR4_PIN, 1023);
+      digitalWrite(PWM4_PIN, HIGH);
+      digitalWrite(DIR4_PIN, HIGH);
+      //setMotor(PWM4_CH, DIR4_PIN, 1023);
     } else {
-      setMotor(PWM4_CH, DIR4_PIN, 0);
+      digitalWrite(PWM4_PIN, LOW);
+      digitalWrite(DIR4_PIN, LOW);
+      //setMotor(PWM4_CH, DIR4_PIN, 0);
     }
   }
   prev_square = button_square; // 状態を更新
