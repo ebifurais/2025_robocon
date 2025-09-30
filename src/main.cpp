@@ -152,16 +152,17 @@ void setup() {
   pinMode(DIR3_PIN, OUTPUT);
   pinMode(DIR4_PIN, OUTPUT);
   pinMode(DIR5_PIN, OUTPUT);
+  pinMode(PWM3_PIN, OUTPUT);
   // PWM初期化
   ledcSetup(PWM1_CH, PWM_FREQ, PWM_RES);
   ledcSetup(PWM2_CH, PWM_FREQ, PWM_RES);
-  ledcSetup(PWM3_CH, PWM_FREQ, PWM_RES);
+  //ledcSetup(PWM3_CH, PWM_FREQ, PWM_RES);
   ledcSetup(PWM4_CH, PWM_FREQ, PWM_RES);
   ledcSetup(PWM5_CH, PWM_FREQ, PWM_RES);
 
   ledcAttachPin(PWM1_PIN, PWM1_CH);
   ledcAttachPin(PWM2_PIN, PWM2_CH);
-  ledcAttachPin(PWM3_PIN, PWM3_CH);
+  //ledcAttachPin(PWM3_PIN, PWM3_CH);
   ledcAttachPin(PWM4_PIN, PWM4_CH);
   ledcAttachPin(PWM5_PIN, PWM5_CH);
 
