@@ -157,13 +157,13 @@ void setup() {
   ledcSetup(PWM1_CH, PWM_FREQ, PWM_RES);
   ledcSetup(PWM2_CH, PWM_FREQ, PWM_RES);
   //ledcSetup(PWM3_CH, PWM_FREQ, PWM_RES);
-  ledcSetup(PWM4_CH, PWM_FREQ, PWM_RES);
+  //ledcSetup(PWM4_CH, PWM_FREQ, PWM_RES);
   ledcSetup(PWM5_CH, PWM_FREQ, PWM_RES);
 
   ledcAttachPin(PWM1_PIN, PWM1_CH);
   ledcAttachPin(PWM2_PIN, PWM2_CH);
   //ledcAttachPin(PWM3_PIN, PWM3_CH);
-  ledcAttachPin(PWM4_PIN, PWM4_CH);
+  //ledcAttachPin(PWM4_PIN, PWM4_CH);
   ledcAttachPin(PWM5_PIN, PWM5_CH);
 
 #ifdef USE_PS4
@@ -230,11 +230,9 @@ void loop() {
     circlePressed = !circlePressed; // 状態をトグル
     if (circlePressed) {
       digitalWrite(PWM3_PIN, HIGH);
-      digitalWrite(DIR3_PIN, HIGH);
       //setMotor(PWM3_CH, DIR3_PIN, 1023);
     } else {
       digitalWrite(PWM3_PIN, LOW);
-      digitalWrite(DIR3_PIN, LOW);
       //setMotor(PWM3_CH, DIR3_PIN, 0);
     }
   }
@@ -245,12 +243,10 @@ void loop() {
     // ボタンが押された瞬間
     squarePressed = !squarePressed; // 状態をトグル
     if (squarePressed) {
-      digitalWrite(PWM4_PIN, HIGH);
-      digitalWrite(DIR4_PIN, HIGH);
+      digitalWrite(DIR3_PIN, HIGH);
       //setMotor(PWM4_CH, DIR4_PIN, 1023);
     } else {
-      digitalWrite(PWM4_PIN, LOW);
-      digitalWrite(DIR4_PIN, LOW);
+      digitalWrite(DIR3_PIN, LOW);
       //setMotor(PWM4_CH, DIR4_PIN, 0);
     }
   }
