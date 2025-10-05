@@ -195,10 +195,10 @@ void loop() {
   if (button_R2) {
     digitalWrite(valvePin, LOW);
   }
-  // --- 5番目モーターを上下ボタンで制御 ---
-  if (button_up == 1) {
+  // --- 5番目モーターを△×ボタンで制御 ---
+  if (button_triangle == 1) {
     setMotor(PWM5_CH, DIR5_PIN, 400);
-  } else if (button_down == 1) {
+  } else if (button_cross == 1) {
     setMotor(PWM5_CH, DIR5_PIN, -400);
   } else {
     setMotor(PWM5_CH, DIR5_PIN, 0);
@@ -208,8 +208,8 @@ void loop() {
     setMotor(PWM1_CH, DIR1_PIN, MOTOR_POWER);
     setMotor(PWM2_CH, DIR2_PIN, -MOTOR_POWER);
   } else if (button_L1) {
-    setMotor(PWM2_CH, DIR2_PIN, MOTOR_POWER);
-    setMotor(PWM1_CH, DIR1_PIN, -MOTOR_POWER);
+    setMotor(PWM2_CH, DIR2_PIN, MOTOR_POWER * 2);
+    setMotor(PWM1_CH, DIR1_PIN, -MOTOR_POWER * 2);
   } else {
     setMotor(PWM1_CH, DIR1_PIN, 0);
     setMotor(PWM2_CH, DIR2_PIN, 0);
@@ -368,12 +368,24 @@ void OmniControl(uint8_t deadzone = 10, float max_rpm = 3000, float rot_rpm = 20
   const float STICK_MAX = 127.0f;
 
   // 左スティック入力（並進）
-  int lx = left_stick_x;
-  int ly = left_stick_y;
+  int lx = left_stick_x * 0.3;
+  int ly = left_stick_y * 0.3;
 
   // デッドゾーン処理
   if (abs(lx) < deadzone) lx = 0;
   if (abs(ly) < deadzone) ly = 0;
+
+  // --- 十字キーによる並進制御追加 ---
+  // 十字キーが押された場合はスティック入力より優先
+  if (button_up) {
+    ly = 127; // 前進
+  } else if (button_down) {
+    ly = -127; // 後退
+  } else if (button_left) {
+    lx = -127; // 左移動
+  } else if (button_right) {
+    lx = 127; // 右移動
+  }
 
   // map()関数は整数演算のため、範囲外の値(-128)が入力されると予期せぬ動作をします。
   // float型で直接割合を計算することで、この問題を回避し、より正確な制御が可能になります。
