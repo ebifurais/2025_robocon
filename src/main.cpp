@@ -120,7 +120,7 @@ const int MOTOR_POWER = 200; // 出力強さ (0～1023)
 
 // --- モータ制御関数 ---
 void setMotor(int pwm_ch, int dir_pin, int speed) {
-  Serial.printf("%d, %d, %d\n", pwm_ch, dir_pin, speed);
+  // Serial.printf("%d, %d, %d\n", pwm_ch, dir_pin, speed);
   if (speed > 0) {
     digitalWrite(dir_pin, HIGH); // 正転
     ledcWrite(pwm_ch, speed);
@@ -138,6 +138,10 @@ bool prev_square = false;
 bool circlePressed = false;
 bool squarePressed = false;
 
+// === リミットスイッチピン設定 ===
+const int LIMIT_TOP_PIN = 27; // 上限スイッチ
+//const int LIMIT_BOTTOM_PIN = 38; // 下限スイッチ
+
 void setup() {
   Serial.begin(115200);
   delay(100);
@@ -153,6 +157,10 @@ void setup() {
   pinMode(DIR4_PIN, OUTPUT);
   pinMode(DIR5_PIN, OUTPUT);
   pinMode(PWM3_PIN, OUTPUT);
+  // リミットスイッチ初期化
+  pinMode(LIMIT_TOP_PIN, INPUT_PULLUP);
+  //pinMode(LIMIT_BOTTOM_PIN, INPUT_PULLUP);
+
   // PWM初期化
   ledcSetup(PWM1_CH, PWM_FREQ, PWM_RES);
   ledcSetup(PWM2_CH, PWM_FREQ, PWM_RES);
@@ -196,11 +204,18 @@ void loop() {
     digitalWrite(valvePin, LOW);
   }
   // --- 5番目モーターを△×ボタンで制御 ---
-  if (button_triangle == 1) {
+  // --- 昇降モーター制御 (PWM5_CH) ---
+  bool limitTop = (digitalRead(LIMIT_TOP_PIN) == LOW); // 上限押された？
+  // bool limitBottom = (digitalRead(LIMIT_BOTTOM_PIN) == LOW); // 下限押された？
+
+  if (button_triangle && limitTop) {
+    // △押下で上昇（上限で停止）
     setMotor(PWM5_CH, DIR5_PIN, 400);
-  } else if (button_cross == 1) {
+  } else if (button_cross) {
+    // ×押下で下降（下限で停止）
     setMotor(PWM5_CH, DIR5_PIN, -400);
   } else {
+    // どちらも押されていない or リミット到達 → 停止
     setMotor(PWM5_CH, DIR5_PIN, 0);
   }
   // === モーター1 (L1=正転, L2=逆転) ===
@@ -208,8 +223,8 @@ void loop() {
     setMotor(PWM1_CH, DIR1_PIN, MOTOR_POWER);
     setMotor(PWM2_CH, DIR2_PIN, -MOTOR_POWER);
   } else if (button_L1) {
-    setMotor(PWM2_CH, DIR2_PIN, MOTOR_POWER * 2);
-    setMotor(PWM1_CH, DIR1_PIN, -MOTOR_POWER * 2);
+    setMotor(PWM2_CH, DIR2_PIN, MOTOR_POWER * 1.5);
+    setMotor(PWM1_CH, DIR1_PIN, -MOTOR_POWER * 1.5);
   } else {
     setMotor(PWM1_CH, DIR1_PIN, 0);
     setMotor(PWM2_CH, DIR2_PIN, 0);
