@@ -140,7 +140,7 @@ bool squarePressed = false;
 
 // === リミットスイッチピン設定 ===
 const int LIMIT_TOP_PIN = 27; // 上限スイッチ
-//const int LIMIT_BOTTOM_PIN = 38; // 下限スイッチ
+const int LIMIT_BOTTOM_PIN = 12; // 下限スイッチ
 
 void setup() {
   Serial.begin(115200);
@@ -159,7 +159,7 @@ void setup() {
   pinMode(PWM3_PIN, OUTPUT);
   // リミットスイッチ初期化
   pinMode(LIMIT_TOP_PIN, INPUT_PULLUP);
-  //pinMode(LIMIT_BOTTOM_PIN, INPUT_PULLUP);
+  pinMode(LIMIT_BOTTOM_PIN, INPUT_PULLUP);
 
   // PWM初期化
   ledcSetup(PWM1_CH, PWM_FREQ, PWM_RES);
@@ -206,12 +206,12 @@ void loop() {
   // --- 5番目モーターを△×ボタンで制御 ---
   // --- 昇降モーター制御 (PWM5_CH) ---
   bool limitTop = (digitalRead(LIMIT_TOP_PIN) == LOW); // 上限押された？
-  // bool limitBottom = (digitalRead(LIMIT_BOTTOM_PIN) == LOW); // 下限押された？
+  bool limitBottom = (digitalRead(LIMIT_BOTTOM_PIN) == HIGH); // 下限押された？
 
   if (button_triangle && limitTop) {
     // △押下で上昇（上限で停止）
     setMotor(PWM5_CH, DIR5_PIN, 400);
-  } else if (button_cross) {
+  } else if (button_cross && limitBottom) {
     // ×押下で下降（下限で停止）
     setMotor(PWM5_CH, DIR5_PIN, -400);
   } else {
