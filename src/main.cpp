@@ -195,7 +195,21 @@ void loop() {
   static unsigned long last_pid_time = millis();
   unsigned long now = millis();
 
-  OmniControl(10, 3000, 2000);
+  // === スピードモード制御 ===
+  static bool highSpeed = false;
+  static bool prev_start = false;
+
+  // STARTボタンが押された瞬間にトグル
+  if (button_options && !prev_start) {
+    highSpeed = !highSpeed;
+  }
+  prev_start = button_options;
+
+  // モードに応じて速度設定
+  float max_rpm = highSpeed ? 5000 : 3000; // 並進速度
+  float rot_rpm = highSpeed ? 3000 : 2000; // 旋回速度
+
+  OmniControl(10, max_rpm, rot_rpm);
   // ---電磁弁制御---
   if (button_R1) {
     digitalWrite(valvePin, HIGH);
