@@ -137,7 +137,8 @@ bool prev_circle = false;
 bool prev_square = false;
 bool circlePressed = false;
 bool squarePressed = false;
-
+bool highSpeed = false;
+bool prev_options = false;
 // === リミットスイッチピン設定 ===
 const int LIMIT_TOP_PIN = 27; // 上限スイッチ
 const int LIMIT_BOTTOM_PIN = 12; // 下限スイッチ
@@ -196,18 +197,16 @@ void loop() {
   unsigned long now = millis();
 
   // === スピードモード制御 ===
-  static bool highSpeed = false;
-  static bool prev_start = false;
 
   // STARTボタンが押された瞬間にトグル
-  if (button_options && !prev_start) {
+  if (button_options && !prev_options) {
     highSpeed = !highSpeed;
   }
-  prev_start = button_options;
+  prev_options = button_options;
 
   // モードに応じて速度設定
   float max_rpm = highSpeed ? 5000 : 3000; // 並進速度
-  float rot_rpm = highSpeed ? 3000 : 2000; // 旋回速度
+  float rot_rpm = highSpeed ? 2000 : 1000; // 旋回速度
 
   OmniControl(10, max_rpm, rot_rpm);
   // ---電磁弁制御---
@@ -234,11 +233,11 @@ void loop() {
   }
   // === モーター1 (L1=正転, L2=逆転) ===
   if (button_L2) {
-    setMotor(PWM1_CH, DIR1_PIN, MOTOR_POWER);
-    setMotor(PWM2_CH, DIR2_PIN, -MOTOR_POWER);
+    setMotor(PWM1_CH, DIR1_PIN, MOTOR_POWER * 1.5);
+    setMotor(PWM2_CH, DIR2_PIN, -MOTOR_POWER * 1.5);
   } else if (button_L1) {
-    setMotor(PWM2_CH, DIR2_PIN, MOTOR_POWER * 1.5);
-    setMotor(PWM1_CH, DIR1_PIN, -MOTOR_POWER * 1.5);
+    setMotor(PWM2_CH, DIR2_PIN, MOTOR_POWER * 2);
+    setMotor(PWM1_CH, DIR1_PIN, -MOTOR_POWER * 2);
   } else {
     setMotor(PWM1_CH, DIR1_PIN, 0);
     setMotor(PWM2_CH, DIR2_PIN, 0);
