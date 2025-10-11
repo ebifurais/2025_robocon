@@ -205,8 +205,8 @@ void loop() {
   prev_options = button_options;
 
   // モードに応じて速度設定
-  float max_rpm = highSpeed ? 5000 : 3000; // 並進速度
-  float rot_rpm = highSpeed ? 2000 : 1000; // 旋回速度
+  float max_rpm = highSpeed ? 5000 : 1000; // 並進速度
+  float rot_rpm = highSpeed ? 1000 : 500; // 旋回速度
 
   OmniControl(10, max_rpm, rot_rpm);
   // ---電磁弁制御---
@@ -391,7 +391,7 @@ void RobomasRotate(int16_t *speeds) {
 
 
 // stick 値からオムニホイール速度を計算して target_vel[] に反映する
-void OmniControl(uint8_t deadzone = 10, float max_rpm = 3000, float rot_rpm = 2000) {
+void OmniControl(uint8_t deadzone = 10, float max_rpm = 3000, float rot_rpm = 1000) {
   // スティックの最大値をfloat型で定義
   const float STICK_MAX = 127.0f;
 
@@ -406,13 +406,13 @@ void OmniControl(uint8_t deadzone = 10, float max_rpm = 3000, float rot_rpm = 20
   // --- 十字キーによる並進制御追加 ---
   // 十字キーが押された場合はスティック入力より優先
   if (button_up) {
-    ly = 127; // 前進
+    ly = 63; // 前進
   } else if (button_down) {
-    ly = -127; // 後退
+    ly = -63; // 後退
   } else if (button_left) {
-    lx = -127; // 左移動
+    lx = -63; // 左移動
   } else if (button_right) {
-    lx = 127; // 右移動
+    lx = 63; // 右移動
   }
 
   // map()関数は整数演算のため、範囲外の値(-128)が入力されると予期せぬ動作をします。
