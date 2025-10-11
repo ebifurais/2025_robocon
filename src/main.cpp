@@ -223,10 +223,10 @@ void loop() {
 
   if (button_triangle && limitTop) {
     // △押下で上昇（上限で停止）
-    setMotor(PWM5_CH, DIR5_PIN, 400);
+    setMotor(PWM5_CH, DIR5_PIN, 800);
   } else if (button_cross && limitBottom) {
     // ×押下で下降（下限で停止）
-    setMotor(PWM5_CH, DIR5_PIN, -400);
+    setMotor(PWM5_CH, DIR5_PIN, -800);
   } else {
     // どちらも押されていない or リミット到達 → 停止
     setMotor(PWM5_CH, DIR5_PIN, 0);
