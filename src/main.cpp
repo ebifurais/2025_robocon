@@ -205,7 +205,7 @@ void loop() {
   prev_options = button_options;
 
   // モードに応じて速度設定
-  float max_rpm = highSpeed ? 5000 : 1000; // 並進速度
+  float max_rpm = highSpeed ? 5000 : 2000; // 並進速度
   float rot_rpm = highSpeed ? 4000 : 2000; // 旋回速度
 
   OmniControl(10, max_rpm, rot_rpm);
@@ -223,10 +223,10 @@ void loop() {
 
   if (button_triangle && limitTop) {
     // △押下で上昇（上限で停止）
-    setMotor(PWM5_CH, DIR5_PIN, 800);
+    setMotor(PWM5_CH, DIR5_PIN, -800);
   } else if (button_cross && limitBottom) {
     // ×押下で下降（下限で停止）
-    setMotor(PWM5_CH, DIR5_PIN, -800);
+    setMotor(PWM5_CH, DIR5_PIN, 800);
   } else {
     // どちらも押されていない or リミット到達 → 停止
     setMotor(PWM5_CH, DIR5_PIN, 0);
@@ -234,10 +234,10 @@ void loop() {
   // === モーター1 (L1=正転, L2=逆転) ===
   if (button_L2) {
     setMotor(PWM1_CH, DIR1_PIN, MOTOR_POWER * 1.5);
-    setMotor(PWM2_CH, DIR2_PIN, -MOTOR_POWER * 1.5);
+    setMotor(PWM2_CH, DIR2_PIN, MOTOR_POWER * 1.5);
   } else if (button_L1) {
     setMotor(PWM2_CH, DIR2_PIN, MOTOR_POWER * 2);
-    setMotor(PWM1_CH, DIR1_PIN, -MOTOR_POWER * 2);
+    setMotor(PWM1_CH, DIR1_PIN, MOTOR_POWER * 2);
   } else {
     setMotor(PWM1_CH, DIR1_PIN, 0);
     setMotor(PWM2_CH, DIR2_PIN, 0);
