@@ -134,7 +134,7 @@ void loop() {
     IM920_SERIAL.print("TXDA ");
     IM920_SERIAL.print(hexPayload);
     IM920_SERIAL.print("\r\n"); // 終端子 <CR><LF>
- // 4. デバッグ用にPCにも送信内容を表示
+    // 4. デバッグ用にPCにも送信内容を表示
     DEBUG_SERIAL.println(hexPayload);
 
     // 応答（OK/NG）を読み飛ばす
